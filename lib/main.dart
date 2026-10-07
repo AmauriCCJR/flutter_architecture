@@ -5,7 +5,7 @@ import 'package:guia_turismo/screens/lugares_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(Inicializar());
+  runApp(inicializar());
 }
 
 class inicializar extends StatefulWidget {
