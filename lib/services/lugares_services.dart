@@ -24,4 +24,23 @@ class LugaresServices {
     }
   }
  
+  Future<String> cadastrarLugar(LugaresModel dados, token) async {
+    try {
+      if (token.isEmpty){
+        return "Não autorizado";
+      }
+      final resposta = await http.post(
+        Uri.parse(endpoint),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode(dados.toJson()),
+      );
+      Map<String, dynamic> mensagem = jsonDecode(resposta.body);
+      return mensagem['message'];
+    } catch (erro) {
+      rethrow;
+    }
+ }
 }

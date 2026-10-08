@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guia_turismo/models/lugares_model.dart';
 import 'package:guia_turismo/services/lugares_services.dart';
+import 'package:guia_turismo/services/session_service.dart';
 
 class LugaresController extends ChangeNotifier {
   bool carregando = false;
@@ -11,7 +12,6 @@ class LugaresController extends ChangeNotifier {
   LugaresController(){
     listaLugares();
   }
-
 
   Future<void> listaLugares() async {
     carregando = true;
@@ -27,4 +27,24 @@ class LugaresController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<String> cadastrarLugar(LugaresModel dados) async {
+    final token = await SessionService().pegarToken() ?? '';
+    carregando = true;
+    erro = "";
+    notifyListeners();
+
+    try{
+      final lugaresService = LugaresServices();
+      final resposta = await lugaresService.cadastrarLugar(dados, "");
+      return resposta;
+    } catch (e){
+      erro = "Erro ao cadastrar: $e";
+      return erro;
+    } finally {
+      carregando = false;
+      notifyListeners();
+    }
+  }
+
 }
