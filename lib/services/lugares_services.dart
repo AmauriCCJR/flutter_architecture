@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LugaresServices {
-  String endpoint = "https://guiaturismo.onrender.com";
+  String endpoint = "https://guia.liliaborges.com.br/api-docs";
   int pagina = 1;
   int limite = 10;
 
