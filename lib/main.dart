@@ -5,6 +5,8 @@ import 'package:guia_turismo/controller/lugares_controller.dart';
 import 'package:guia_turismo/controller/theme_controller.dart';
 //import 'package:guia_turismo/inicializar.dart';
 import 'package:guia_turismo/screens/cadastro_lugar.dart';
+import 'package:guia_turismo/screens/home_screen.dart';
+import 'package:guia_turismo/screens/login_screen.dart';
 import 'package:guia_turismo/screens/lugares_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -28,11 +30,16 @@ class _inicializarState extends State<inicializar> {
       ChangeNotifierProvider(create: (_) => ThemeController()),
       ChangeNotifierProvider(create: (_) => CameraController()),
     ],
-    child: Consumer(
-      builder: (context, lugaresController, child) => MaterialApp(
+    child: Consumer<ThemeController>(
+      builder: (context, controllerThema, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: 'cadastro',
+        theme: controllerThema.temaClaro(),
+        darkTheme: controllerThema.temaEscuro(),
+        themeMode: controllerThema.temaAtual,
+        initialRoute: 'login',
         routes: {
+          'login': (context) => LoginScreen(),
+          'home': (context) => HomeScreen(),
           'lugares': (context) => LugaresScreen(),
           'cadastro': (context) => CadastroLugar()
         },

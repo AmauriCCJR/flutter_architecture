@@ -36,7 +36,9 @@ class LugaresController extends ChangeNotifier {
 
     try{
       final lugaresService = LugaresServices();
-      final resposta = await lugaresService.cadastrarLugar(dados, "");
+      //Gera uma autenticação permitindo registro de dados na api
+      final resposta = await lugaresService.cadastrarLugar(dados, token);
+      await listaLugares();
       return resposta;
     } catch (e){
       erro = "Erro ao cadastrar: $e";

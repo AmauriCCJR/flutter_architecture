@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LugaresServices {
-  String endpoint = "https://guia.liliaborges.com.br/api-docs";
+  String endpoint = "https://guia.liliaborges.com.br/lugares";
   int pagina = 1;
   int limite = 10;
 
@@ -38,7 +38,10 @@ class LugaresServices {
         body: jsonEncode(dados.toJson()),
       );
       Map<String, dynamic> mensagem = jsonDecode(resposta.body);
-      return mensagem['message'];
+      if (resposta.statusCode != 201) {
+        throw Exception(mensagem['message'] ?? 'Erro ao cadastrar');
+      }
+      return mensagem['message'] ?? 'Lugar cadastrado!';
     } catch (erro) {
       rethrow;
     }
