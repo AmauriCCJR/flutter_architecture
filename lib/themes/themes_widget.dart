@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/*
+  Essa pagina só existe para mudar especificamente
+  as cores dos objetos do código como o bottomNavigation, AppBar, 
+  FloatActionButton e etc
+*/
 AppBarTheme defineAppBar(cor) {
   return AppBarTheme(
     centerTitle: true,
@@ -12,12 +17,18 @@ AppBarTheme defineAppBar(cor) {
 BottomNavigationBarThemeData defineNavegacaoBase(cor) {
   return BottomNavigationBarThemeData(
     backgroundColor: cor.primary,
+    selectedItemColor: cor.onPrimary,
+    //Não deixa os items "Não selecionados" ficarem apagados
+    unselectedItemColor: cor.onPrimary.withValues(alpha: 0.8),
     elevation: 4,
   );
 }
 
 ElevatedButtonThemeData defineBotaoElevated(cor) {
   return ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+    style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 199, 199, 199),
+    elevation: 3),
   );
 }
+
+

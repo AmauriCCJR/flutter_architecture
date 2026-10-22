@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/theme_controller.dart';
+import 'package:guia_turismo/screens/camera_screen.dart';
 import 'package:guia_turismo/screens/cadastro_lugar.dart';
-import 'package:guia_turismo/screens/lugares_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,8 +14,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _paginaAtual = 0;
   //Geram links e titulo para os botões do bottomNavigationBar
   final List<Widget> _paginas = [
-    Center(child: Text("")),
-    CadastroLugar(),
+    Center(),
+    CameraScreen(),
     LugaresScreen(),
   ];
 
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'Tirar foto',
     'Lugares Para visitar'
   ];
-
+//Do ultimo comentário até aqui é para o bottomNavigationBar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
         //Pega o titulo pelo indice
         title: Text(_cabecalho[_paginaAtual]),
         actions: [
+          /*
+            Consumer vai ouvir o ThemeController e quando o botão é pressionado ele vai
+            trocar de tema 
+          */
           Consumer<ThemeController>(
             builder: (context, controllerThema, child) => IconButton(
               onPressed: () => controllerThema.alternarTema(),
@@ -44,10 +48,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _paginas[_paginaAtual],
 
       bottomNavigationBar: BottomNavigationBar(
+        
         currentIndex: _paginaAtual,
+        //Só para garantir que os icones do BottomNavigationBar apareçam
         showSelectedLabels: true,
         showUnselectedLabels: true,
-        backgroundColor: Colors.white,
+        
+        //Muda o index da pagina, e por consequencia a página
         onTap: (index) => setState(() => _paginaAtual = index),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),

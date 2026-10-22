@@ -2,8 +2,12 @@ class LugaresModel {
   final int id;
   final String nome;
   final String? categoria;
-  final double latitude;
-  final double longitude;
+  /*
+    'Num' pq as vezes o json pode vir Int ou Double, por 'num' ser = numerico, 
+    então aceita ambos e evita bugs (experiencia pessoal)
+  */
+  final num latitude;
+  final num longitude;
   final String? descricao;
   final int categoriaId;
 
