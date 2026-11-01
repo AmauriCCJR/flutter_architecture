@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/theme_controller.dart';
 import 'package:guia_turismo/screens/camera_screen.dart';
 import 'package:guia_turismo/screens/cadastro_lugar.dart';
+import 'package:guia_turismo/screens/mapa_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,12 +18,14 @@ class _HomeScreenState extends State<HomeScreen> {
     Center(),
     CameraScreen(),
     LugaresScreen(),
+    MapaScreen()
   ];
 
   final List<String> _cabecalho = [
     'Guia Turismo',
     'Tirar foto',
-    'Lugares Para visitar'
+    'Lugares Para visitar',
+    'GPS'
   ];
 //Do ultimo comentário até aqui é para o bottomNavigationBar
   @override
@@ -59,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
           BottomNavigationBarItem(icon: Icon(Icons.camera), label: 'Camera'),
-          BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Locais')
+          BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Locais'),
+          BottomNavigationBarItem(icon: Icon(Icons.gps_fixed), label: 'GPS')
         ]
         
         ),

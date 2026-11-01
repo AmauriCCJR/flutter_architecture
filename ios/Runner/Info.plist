@@ -71,7 +71,9 @@
 	<string>Permites que eu use a camera?</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Posso usar seu microfone??</string>
- 
+	
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>O app usa sua localização para mostrar sua posição no mapa.</string>
 
 </dict>
 </plist>
