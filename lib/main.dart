@@ -11,11 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/auth_controller.dart';
 import 'package:guia_turismo/controller/camera_controller.dart';
 import 'package:guia_turismo/controller/lugares_controller.dart';
+import 'package:guia_turismo/controller/mapa_controller.dart';
 import 'package:guia_turismo/controller/theme_controller.dart';
 import 'package:guia_turismo/screens/camera_screen.dart';
 import 'package:guia_turismo/screens/home_screen.dart';
 import 'package:guia_turismo/screens/login_screen.dart';
 import 'package:guia_turismo/screens/cadastro_lugar.dart';
+import 'package:guia_turismo/screens/mapa_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -41,6 +43,7 @@ class _InicializarState extends State<Inicializar> {
       ChangeNotifierProvider(create: (_) => AuthController()),
       ChangeNotifierProvider(create: (_) => ThemeController()),
       ChangeNotifierProvider(create: (_) => CameraController()),
+      ChangeNotifierProvider(create: (_) => MapaController()),
     ],
     child: Consumer<ThemeController>(
         builder: (context, controllerThema, child) => MaterialApp(
@@ -48,13 +51,14 @@ class _InicializarState extends State<Inicializar> {
         theme: controllerThema.temaClaro(),
         darkTheme: controllerThema.temaEscuro(),
         themeMode: controllerThema.temaAtual,
-        initialRoute: 'login',
+        initialRoute: 'home',
         //Define as rotas e em quais classes devem ser chamadas
         routes: {
           'login': (context) => LoginScreen(),
           'home': (context) => HomeScreen(),
           'lugares': (context) => LugaresScreen(),
-          'camera': (context) => CameraScreen()
+          'camera': (context) => CameraScreen(),
+          'mapa': (context) => MapaScreen()
         },
       ),
     ),
