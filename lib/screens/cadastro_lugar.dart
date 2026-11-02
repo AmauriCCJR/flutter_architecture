@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/lugares_controller.dart';
 import 'package:guia_turismo/models/lugares_model.dart';
 import 'package:provider/provider.dart';
-
+import 'package:guia_turismo/services/buscarCEP_service.dart';
 class LugaresScreen extends StatefulWidget {
   const LugaresScreen({super.key});
 
@@ -17,6 +17,7 @@ class _LugaresScreenState extends State<LugaresScreen> {
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
   int _categoriaId = 1;
+  final _buscarCEPController = TextEditingController();
 
 void abrirForm() {
   //Sempre que abrir o forms, o campo está limpo
@@ -25,6 +26,8 @@ void abrirForm() {
   _latitudeController.clear();
   _longitudeController.clear();
   _categoriaId = 1;
+  _buscarCEPController.clear();
+
   showDialog(context: context,
   builder: (context) {
     return AlertDialog(
@@ -63,6 +66,16 @@ void abrirForm() {
               //Salva o valor do dropdown
               onChanged: (valor) => _categoriaId = valor!,
             ),
+            TextField(
+              controller: _buscarCEPController,
+              decoration: InputDecoration(
+              label: Text("Endereço ou CEP"),
+              suffixIcon: IconButton(
+              onPressed: () => _buscarCEP(context),
+              icon: Icon(Icons.search),
+            ),
+            ),
+            ),
             SizedBox(height: 20),
             TextField(
               controller: _latitudeController,
@@ -87,6 +100,27 @@ void abrirForm() {
     );
   });
 }
+//_buscarCEP = Função privada desse arquivo
+Future<void> _buscarCEP(BuildContext contextDialog) async {
+    String mensagem;
+    try {
+      final local = await BuscarcepService().buscar(_buscarCEPController.text);
+      if (local == null) {
+        mensagem = "Local não encontrado";
+      } else {
+        _latitudeController.text = local['lat'];
+        _longitudeController.text = local['lon'];
+        //Mostra o local encontrado para o usuário conferir
+        mensagem = local['display_name'];
+      }
+    } catch (e) {
+      mensagem = "Erro ao buscar o local";
+    }
+    //Se o formulário não estiver mais aberto. Encerre por aqui
+    if (!contextDialog.mounted) return;
+    //Mostra a mensagem no snackbar (barrinha em cima do bottomNavigationBar)
+    ScaffoldMessenger.of(contextDialog).showSnackBar(SnackBar(content: Text(mensagem)));
+  }
 
 Future<void> _salvarDados(BuildContext contextDialog) async {
   final novoLugar = LugaresModel(
