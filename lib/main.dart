@@ -51,7 +51,7 @@ class _InicializarState extends State<Inicializar> {
         theme: controllerThema.temaClaro(),
         darkTheme: controllerThema.temaEscuro(),
         themeMode: controllerThema.temaAtual,
-        initialRoute: 'home',
+        initialRoute: 'login',
         //Define as rotas e em quais classes devem ser chamadas
         routes: {
           'login': (context) => LoginScreen(),

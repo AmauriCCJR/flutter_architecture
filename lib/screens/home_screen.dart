@@ -51,7 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _paginas[_paginaAtual],
 
       bottomNavigationBar: BottomNavigationBar(
-        
+        //Preciso fixar isso para a cor da barra fixar, caso contrário, ela some
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.black,
         currentIndex: _paginaAtual,
         //Só para garantir que os icones do BottomNavigationBar apareçam
         showSelectedLabels: true,

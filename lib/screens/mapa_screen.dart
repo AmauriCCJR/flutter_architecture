@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:guia_turismo/controller/mapa_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:guia_turismo/controller/lugares_controller.dart';
+import 'package:latlong2/latlong.dart';
 
 class MapaScreen extends StatefulWidget {
   const MapaScreen({super.key});
@@ -9,12 +11,11 @@ class MapaScreen extends StatefulWidget {
   @override
   State<MapaScreen> createState() => _MapaScreenState();
 }
-
 class _MapaScreenState extends State<MapaScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<MapaController>(
-      builder: (context, mapaController, child) => Scaffold(
+    return Consumer2<MapaController, LugaresController>(
+      builder: (context, mapaController, lugaresController,child) => Scaffold(
         body: SafeArea(
           top: true,
           bottom: true,
@@ -41,7 +42,33 @@ class _MapaScreenState extends State<MapaScreen> {
                     //Informa quem está pedindo para usar o mapa
                     userAgentPackageName: "br.com.guiaturismo.maps",
                   ),
-                  MarkerLayer(
+                  
+                      /*
+                        Se o lugar não tiver categoria ou tiver coordenadas inválidas
+                        ele não aparece no mapa.
+                      */
+
+                      //Marcador para os lugares salvos
+                      MarkerLayer(
+                        markers: 
+                        lugaresController.lugares.map(
+                          (lugaresSalvos) => Marker(
+                            alignment: Alignment.center,
+                            width: 40,
+                            height: 40,
+                            rotate: true,
+                            //lugaresSalvos foi criado nesse Map, e pega os valores de lugares dentro de lugaresController
+                            point: LatLng(lugaresSalvos.latitude.toDouble(), lugaresSalvos.longitude.toDouble()),
+                            child: Tooltip(
+                            message: lugaresSalvos.nome, //Se pressionar o lugar mostra o nome
+                            child: Icon(Icons.place, color: Colors.blueAccent)
+                            )
+                          ),
+                        ).toList() 
+                        ),
+
+                        //Criado durante a aula 
+                        MarkerLayer(
                     markers: 
                     mapaController.pontosNoMapa.map(
                       (pontoReferencia) => Marker(
@@ -52,9 +79,8 @@ class _MapaScreenState extends State<MapaScreen> {
                         point: pontoReferencia,
                         child: Icon(Icons.location_on)
                       )
-                      ).toList())
+                      ).toList()),
                 ]
-                
                 ) 
               ),
             ],
