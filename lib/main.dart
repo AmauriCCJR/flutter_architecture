@@ -19,8 +19,14 @@ import 'package:guia_turismo/screens/login_screen.dart';
 import 'package:guia_turismo/screens/cadastro_lugar.dart';
 import 'package:guia_turismo/screens/mapa_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:guia_turismo/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(Inicializar());
 }
 

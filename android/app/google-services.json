@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "491020444455",
+    "project_id": "flutter-map-fatec",
+    "storage_bucket": "flutter-map-fatec.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491020444455:android:7af29b5cf47c185a033f02",
+        "android_client_info": {
+          "package_name": "com.example.guia_turismo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491020444455-jq63rjp5v49v4q939v6r4ann2koth2ku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3N52rGb3kh8mpCE5i-g6huXfXA_KPgiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491020444455-jq63rjp5v49v4q939v6r4ann2koth2ku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
