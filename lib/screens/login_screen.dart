@@ -54,12 +54,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+/*
    Future<void> _sair() async {
     await GoogleSignIn.instance.signOut();
     await FirebaseAuth.instance.signOut();
     setState(() => _usuario = null);
   }
-
+*/
 
 
   @override
