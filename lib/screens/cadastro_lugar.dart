@@ -3,6 +3,8 @@ import 'package:guia_turismo/controller/lugares_controller.dart';
 import 'package:guia_turismo/models/lugares_model.dart';
 import 'package:provider/provider.dart';
 import 'package:guia_turismo/services/buscarCEP_service.dart';
+import 'package:guia_turismo/services/compartilhar_service.dart';
+import 'package:guia_turismo/widgets/opcoes_compartilhar.dart';
 class LugaresScreen extends StatefulWidget {
   const LugaresScreen({super.key});
 
@@ -142,6 +144,91 @@ Future<void> _salvarDados(BuildContext contextDialog) async {
   }
 }
 
+//Menu de baixo com as opções de compartilhamento do lugar
+void _abrirOpcoesLugar(LugaresModel lugar) {
+  showModalBottomSheet(
+    context: context,
+    builder: (contextSheet) => SafeArea(
+      child: Wrap(
+        children: [
+          ListTile(
+            title: Text(lugar.nome, style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(lugar.categoria.toString()),
+          ),
+          ListTile(
+            leading: Icon(Icons.share),
+            title: Text("Compartilhar lugar"),
+            subtitle: Text("E-mail, WhatsApp, etc"),
+            onTap: () {
+              Navigator.pop(contextSheet);
+              //Abre o menu para escolher: E-mail ou outros apps
+              mostrarOpcoesCompartilhar(context, CompartilharService().conteudoLugar(lugar));
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.star_rate),
+            title: Text("Avaliar e compartilhar"),
+            onTap: () {
+              Navigator.pop(contextSheet);
+              _abrirAvaliacao(lugar);
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+/*
+  Formulário de avaliação (nota + comentário).
+*/
+void _abrirAvaliacao(LugaresModel lugar) {
+  int nota = 5;
+  final comentarioController = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (contextDialog) => StatefulBuilder(
+      //StatefulBuilder permite atualizar as estrelas dentro do dialog
+      builder: (contextDialog, setStateDialog) => AlertDialog(
+        title: Text("Avaliar ${lugar.nome}"),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                //Gera 5 estrelas, preenchidas até a nota escolhida
+                children: List.generate(5, (i) => IconButton(
+                  onPressed: () => setStateDialog(() => nota = i + 1),
+                  icon: Icon(i < nota ? Icons.star : Icons.star_border, color: Colors.amber),
+                )),
+              ),
+              TextField(
+                controller: comentarioController,
+                maxLines: 3,
+                decoration: InputDecoration(label: Text("Comentário")),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(contextDialog), child: Text("Cancelar")),
+          TextButton.icon(
+            icon: Icon(Icons.share),
+            label: Text("Compartilhar"),
+            onPressed: () {
+              final conteudo = CompartilharService().conteudoAvaliacao(lugar, nota, comentarioController.text);
+              Navigator.pop(contextDialog);
+              mostrarOpcoesCompartilhar(context, conteudo);
+            },
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,7 +255,8 @@ Future<void> _salvarDados(BuildContext contextDialog) async {
               ),
               elevation: 4,
               child: ListTile(
-                onTap: (){},
+                //Ao tocar no lugar abre as opções de compartilhar/avaliar
+                onTap: () => _abrirOpcoesLugar(lugar),
                 title: Text(lugar.nome),
                 subtitle: Text(lugar.categoria.toString()),
                 //Icone que fica no inicio da linha

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:guia_turismo/controller/camera_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:guia_turismo/services/compartilhar_service.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -42,6 +43,23 @@ class _CameraScreenState extends State<CameraScreen> {
                     icon: Icon(Icons.camera_alt_rounded)
                   ) 
                 ),
+                //Botão de compartilhar só aparece quando tem foto
+                if (controleCamera.imagemSelecionada != null)
+                  Positioned(
+                    bottom: 8,
+                    left: 8,
+                    child: Builder(
+                      builder: (contextBotao) => IconButton(
+                        tooltip: "Compartilhar foto",
+                        onPressed: () => CompartilharService().compartilharFoto(
+                          controleCamera.imagemSelecionada!,
+                          legenda: "Foto tirada com o app Guia Turismo",
+                          origem: CompartilharService().origem(contextBotao),
+                        ),
+                        icon: Icon(Icons.share),
+                      ),
+                    ),
+                  ),
               ],
             )  
           ],
