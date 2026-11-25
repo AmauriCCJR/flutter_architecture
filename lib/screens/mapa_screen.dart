@@ -4,6 +4,8 @@ import 'package:guia_turismo/controller/mapa_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:guia_turismo/controller/lugares_controller.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:guia_turismo/services/compartilhar_service.dart';
+import 'package:guia_turismo/widgets/opcoes_compartilhar.dart';
 
 class MapaScreen extends StatefulWidget {
   const MapaScreen({super.key});
@@ -61,7 +63,11 @@ class _MapaScreenState extends State<MapaScreen> {
                             point: LatLng(lugaresSalvos.latitude.toDouble(), lugaresSalvos.longitude.toDouble()),
                             child: Tooltip(
                             message: lugaresSalvos.nome, //Se pressionar o lugar mostra o nome
-                            child: Icon(Icons.place, color: Colors.blueAccent)
+                            //Se tocar no marcador, compartilha o lugar
+                            child: GestureDetector(
+                              onTap: () => mostrarOpcoesCompartilhar(context, CompartilharService().conteudoLugar(lugaresSalvos)),
+                              child: Icon(Icons.place, color: Colors.blueAccent),
+                            ),
                             )
                           ),
                         ).toList() 
@@ -86,11 +92,29 @@ class _MapaScreenState extends State<MapaScreen> {
             ],
           )
           ),
-        floatingActionButton: FloatingActionButton(
-          //Centraliza a posição do usuário no mapa
-          onPressed: () => mapaController.buscarLocal(),
-          child: Icon(Icons.person_pin_circle_rounded),
-          ),
+        floatingActionButton: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            //Só aparece se a localização já foi encontrada
+            if (mapaController.atual != null)
+              FloatingActionButton.small(
+                heroTag: 'compartilhar_local', //Dois FABs na tela precisam de tags diferentes
+                tooltip: "Compartilhar minha localização",
+                onPressed: () => mostrarOpcoesCompartilhar(
+                  context,
+                  CompartilharService().conteudoLocalizacao(mapaController.atual!),
+                ),
+                child: Icon(Icons.share_location),
+              ),
+            SizedBox(height: 12),
+            FloatingActionButton(
+              heroTag: 'buscar_local',
+              //Centraliza a posição do usuário no mapa
+              onPressed: () => mapaController.buscarLocal(),
+              child: Icon(Icons.person_pin_circle_rounded),
+            ),
+          ],
+        ),
       )
     );
   }
