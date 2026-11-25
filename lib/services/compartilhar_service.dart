@@ -42,11 +42,9 @@ class CompartilharService {
     return box.localToGlobal(Offset.zero) & box.size;
   }
 
-  // ------------------- MONTAGEM DOS TEXTOS -------------------
-
   //Texto de um estabelecimento/lugar cadastrado
   Conteudo conteudoLugar(LugaresModel lugar) {
-    final texto = StringBuffer()..writeln('📍 ${lugar.nome}');
+    final texto = StringBuffer()..writeln(' ${lugar.nome}');
     if ((lugar.categoria ?? '').isNotEmpty) {
       texto.writeln('Categoria: ${lugar.categoria}');
     }
@@ -65,7 +63,7 @@ class CompartilharService {
   Conteudo conteudoLocalizacao(LatLng ponto, {String titulo = 'Minha localização'}) {
     return Conteudo(
       titulo,
-      '📌 $titulo\n${linkMapa(ponto.latitude, ponto.longitude)}\n\n$_assinatura',
+      '$titulo\n${linkMapa(ponto.latitude, ponto.longitude)}\n\n$_assinatura',
     );
   }
 
@@ -87,8 +85,6 @@ class CompartilharService {
     return Conteudo('Avaliação: ${lugar.nome}', texto.toString());
   }
 
-  // ------------------- FORMAS DE ENVIO -------------------
-
   //Menu nativo: o usuário escolhe o app (WhatsApp, E-mail, etc)
   Future<ShareResult> compartilhar(Conteudo conteudo, {Rect? origem}) {
     return SharePlus.instance.share(ShareParams(
@@ -104,11 +100,9 @@ class CompartilharService {
     Retorna true se conseguiu abrir o e-mail.
   */
   Future<bool> enviarPorEmail(Conteudo conteudo, {String destinatario = '', Rect? origem}) async {
-    /*
-      Uri.encodeComponent troca espaços, acentos e quebras de linha por %20, %C3...
-      (Não usei queryParameters do Uri pq ele troca espaço por "+",
-      e alguns apps de e-mail mostram o "+" no texto)
-    */
+  
+      //uri.encodeComponent deixa o texto em formato compativel com url
+
     final link = Uri.parse(
       'mailto:$destinatario'
       '?subject=${Uri.encodeComponent(conteudo.assunto)}'

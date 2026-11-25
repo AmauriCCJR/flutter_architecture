@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:guia_turismo/services/compartilhar_service.dart';
 
 /*
-  Menu de baixo (BottomSheet) reutilizável em qualquer tela:
   - "Enviar por E-mail"  -> abre direto o app de e-mail
   - "Outros apps" -> abre o menu nativo (WhatsApp, Telegram, etc)
 */
@@ -13,7 +12,7 @@ void mostrarOpcoesCompartilhar(BuildContext context, Conteudo conteudo) {
 
   showModalBottomSheet(
     context: context,
-    builder: (contextSheet) => SafeArea(
+    builder: (notificacaoEmail) => SafeArea(
       child: Wrap(
         children: [
           ListTile(
@@ -24,8 +23,8 @@ void mostrarOpcoesCompartilhar(BuildContext context, Conteudo conteudo) {
             leading: Icon(Icons.email),
             title: Text("Enviar por E-mail"),
             onTap: () async {
-              final origem = servico.origem(contextSheet);
-              Navigator.pop(contextSheet);
+              final origem = servico.origem(notificacaoEmail);
+              Navigator.pop(notificacaoEmail);
               final abriuEmail = await servico.enviarPorEmail(conteudo, origem: origem);
               //Avisa o usuário quando caiu no plano B
               if (!abriuEmail) {
@@ -40,8 +39,8 @@ void mostrarOpcoesCompartilhar(BuildContext context, Conteudo conteudo) {
             title: Text("Outros apps"),
             subtitle: Text("WhatsApp, Telegram, SMS..."),
             onTap: () {
-              final origem = servico.origem(contextSheet);
-              Navigator.pop(contextSheet);
+              final origem = servico.origem(notificacaoEmail);
+              Navigator.pop(notificacaoEmail);
               servico.compartilhar(conteudo, origem: origem);
             },
           ),
